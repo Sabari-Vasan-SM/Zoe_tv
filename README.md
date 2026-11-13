@@ -2,6 +2,10 @@
 
 A modern, minimal, premium Android TV & Google TV Home Launcher engineered with **Kotlin** and **Jetpack Compose**. Designed specifically for 10-foot television experiences with clean typography, fluid D-pad navigation, and zero visual clutter.
 
+<p align="center">
+  <img src="screenshot.png" alt="Zoe TV Launcher Home Screen" width="100%" />
+</p>
+
 ---
 
 ## 🌟 Key Features
@@ -139,6 +143,7 @@ Zoe_tv/
 │               └── styles.xml
 ├── release/
 │   └── ZoeTVLauncher-v1.0.0.apk
+├── screenshot.png
 ├── build.gradle.kts
 ├── settings.gradle.kts
 ├── gradle.properties

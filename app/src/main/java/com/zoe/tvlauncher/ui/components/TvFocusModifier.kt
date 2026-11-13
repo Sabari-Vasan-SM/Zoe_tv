@@ -9,7 +9,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -50,6 +48,7 @@ fun Modifier.tvFocusable(
     onClick: () -> Unit
 ): Modifier {
     var isFocused by remember { mutableStateOf(false) }
+    var longPressTriggered by remember { mutableStateOf(false) }
 
     val scale by animateFloatAsState(
         targetValue = if (isFocused) scaleFactor else 1.0f,
@@ -75,37 +74,40 @@ fun Modifier.tvFocusable(
         .onFocusChanged { state ->
             isFocused = state.isFocused
             if (state.isFocused) {
+                longPressTriggered = false
                 onFocused?.invoke()
             }
         }
         .focusable()
         .onKeyEvent { keyEvent ->
-            if (keyEvent.type == KeyEventType.KeyUp) {
-                val nativeEvent = keyEvent.nativeKeyEvent
-                when (nativeEvent.keyCode) {
-                    AndroidKeyEvent.KEYCODE_DPAD_CENTER,
-                    AndroidKeyEvent.KEYCODE_ENTER,
-                    AndroidKeyEvent.KEYCODE_NUMPAD_ENTER -> {
+            val nativeEvent = keyEvent.nativeKeyEvent
+            val isCenter = nativeEvent.keyCode == AndroidKeyEvent.KEYCODE_DPAD_CENTER ||
+                    nativeEvent.keyCode == AndroidKeyEvent.KEYCODE_ENTER ||
+                    nativeEvent.keyCode == AndroidKeyEvent.KEYCODE_NUMPAD_ENTER
+
+            if (keyEvent.type == KeyEventType.KeyDown) {
+                if (isCenter && (nativeEvent.repeatCount >= 1 || nativeEvent.isLongPress)) {
+                    if (!longPressTriggered && onLongClick != null) {
+                        longPressTriggered = true
+                        onLongClick()
+                        return@onKeyEvent true
+                    }
+                }
+                false
+            } else if (keyEvent.type == KeyEventType.KeyUp) {
+                if (isCenter) {
+                    if (longPressTriggered) {
+                        longPressTriggered = false
+                        true
+                    } else {
                         onClick()
                         true
                     }
-                    AndroidKeyEvent.KEYCODE_MENU -> {
-                        if (onLongClick != null) {
-                            onLongClick()
-                            true
-                        } else false
-                    }
-                    else -> false
-                }
-            } else if (keyEvent.type == KeyEventType.KeyDown) {
-                val nativeEvent = keyEvent.nativeKeyEvent
-                // Detect long press on DPAD center
-                if (nativeEvent.keyCode == AndroidKeyEvent.KEYCODE_DPAD_CENTER &&
-                    nativeEvent.isLongPress &&
-                    onLongClick != null
-                ) {
-                    onLongClick()
-                    true
+                } else if (nativeEvent.keyCode == AndroidKeyEvent.KEYCODE_MENU) {
+                    if (onLongClick != null) {
+                        onLongClick()
+                        true
+                    } else false
                 } else {
                     false
                 }

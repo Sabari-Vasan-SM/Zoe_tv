@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <!-- Background Gradient -->
+    <path
+        android:pathData="M0,0h320v180h-320z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="320"
+                android:endY="180"
+                android:type="linear">
+                <item android:color="#FF0D1117" android:offset="0.0" />
+                <item android:color="#FF161B22" android:offset="0.5" />
+                <item android:color="#FF0B0E14" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Accent Geometric Ambient Glow -->
+    <path
+        android:pathData="M160,90m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="100"
+                android:startY="30"
+                android:endX="220"
+                android:endY="150"
+                android:type="linear">
+                <item android:color="#3300E5FF" android:offset="0.0" />
+                <item android:color="#1A7C4DFF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- TV Display Frame Icon -->
+    <path
+        android:pathData="M125,60 h70 c5.5,0 10,4.5 10,10 v40 c0,5.5 -4.5,10 -10,10 h-70 c-5.5,0 -10,-4.5 -10,-10 v-40 c0,-5.5 4.5,-10 10,-10 z"
+        android:strokeColor="#FF00E5FF"
+        android:strokeWidth="3.5"
+        android:fillColor="#00000000" />
+
+    <!-- TV Stand -->
+    <path
+        android:pathData="M150,120 v10 h20 v-10 M140,130 h40"
+        android:strokeColor="#FF00E5FF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round" />
+
+    <!-- Stylized 'Z' inside screen -->
+    <path
+        android:pathData="M148,76 h24 l-24,28 h24"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+</vector>
